@@ -33,7 +33,7 @@ Point.prototype.clone = function () {
     return new Point(this.x, this.y);
 };
 
-function Segment(p1, p2, couleur) {
+function Segment(p1, p2, couleur=[0,0,0]) {
     'use strict';
     Object.defineProperty(this, "p1", {
         enumerable: false,
