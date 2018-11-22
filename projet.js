@@ -70,6 +70,7 @@ Segment.prototype.average = function (p, alpha) {
     return new Segment(this.p1.average(p, alpha), this.p2.average(p, alpha));
 };
 
+/*Pas sur de cette partie, */
 function Model (fen1 = [], fen2 []) {
     this.fen1 = fen1;
     this.fen2 = fen2;
