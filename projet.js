@@ -129,3 +129,21 @@ function paint(ctx,tab){ //affiche les segements contenus dans tab dans le canva
 	
 	
 }
+
+function computeCoordinates(event){
+    //on recup l'evenement qui a produit l'evenement (ici le canvas)
+    const canvas = event.currentTarget;
+
+    //on demande le rectangle englobant le canvas
+    const rect = canvas.getBoundingClientRect();
+
+    //on calcule les coordonnée relatives
+    const x = event.clientX - rect.left;
+    const y = event.clientY - rect.top;
+
+    return [x,y]
+}
+
+ctx1.onclick = function(event){
+    var coords = computeCoordinates(event);
+}
