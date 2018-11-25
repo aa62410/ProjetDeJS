@@ -75,9 +75,13 @@ Segment.prototype.average = function (p, alpha) {
 let MODEL=[[],[]]
 
 /*MODEL=[[[20,10],[380,50]]],[[[]]] // essai
+
 var a = new Point(20, 10);
 var b = new Point(380, 50);
-MODEL=[[a,b]],[[[]]]
+MODEL=[[a],[b]],[[[]]]
+MODEL[0][0]=a
+MODEL[0][1]=b
+
 ctx1 = document.getElementById('ctx1').getContext('2d');
 paint(ctx,tab)*/
 
@@ -91,10 +95,11 @@ var b = new Point(290, 120);
 var c = new Point(180, 180);
 var d = new Point(70, 180);
 var e = new Point(100, 110);
-MODEL[0][0]=a,b
- MODEL[0][1]=b,c
- MODEL[0][2]=c,d
- MODEL[0][3]=d,e
+MODEL[0][0]=a
+MODEL[0][1]=b
+MODEL[0][2]=c
+MODEL[0][3]=d
+MODEL[0][4]=e
 
  repaint()
  * 
