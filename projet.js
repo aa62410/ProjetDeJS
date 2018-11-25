@@ -85,6 +85,17 @@ paint(ctx,tab)*/
  MODEL[0][1]=[290,120],[180,180]
  MODEL[0][2]=[180,180],[70,180]
  MODEL[0][3]=[70,180],[100,110]
+
+var a = new Point(20, 10);
+var b = new Point(290, 120);
+var c = new Point(180, 180);
+var d = new Point(70, 180);
+var e = new Point(100, 110);
+MODEL[0][0]=a,b
+ MODEL[0][1]=b,c
+ MODEL[0][2]=c,d
+ MODEL[0][3]=d,e
+
  repaint()
  * 
  * 
