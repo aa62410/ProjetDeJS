@@ -1,4 +1,5 @@
-function Point(abs = 0, ord = 0) {
+function Point(abs, ord) {
+	'use strict';
     Object.defineProperty(this, "x", {
         enumerable: false,
         writable: false,
@@ -33,7 +34,7 @@ Point.prototype.clone = function () {
     return new Point(this.x, this.y);
 };
 
-function Segment(p1, p2, couleur=[0,0,0]) {
+function Segment(p1, p2, couleur) {
     'use strict';
     Object.defineProperty(this, "p1", {
         enumerable: false,
@@ -71,7 +72,7 @@ Segment.prototype.average = function (p, alpha) {
 };
 
 /*Pas sur de cette partie, */
-function Model (fen1 = [], fen2 []) {
+function Model(fen1=[],fen2=[]) {
     this.fen1 = fen1;
     this.fen2 = fen2;
 }
