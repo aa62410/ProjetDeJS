@@ -53,7 +53,7 @@ function Segment(p1, p2, couleur) {
         enumerable: false,
         writable: false,
         configurable: false,
-        value: tab
+        value: couleur
     });
 }
 
