@@ -1,3 +1,4 @@
+//MODELE
 function Point(abs, ord) {
 	'use strict';
     Object.defineProperty(this, "x", {
@@ -71,8 +72,30 @@ Segment.prototype.average = function (p, alpha) {
     return new Segment(this.p1.average(p, alpha), this.p2.average(p, alpha));
 };
 
-/*Pas sur de cette partie, */
-function Model(fen1=[],fen2=[]) {
-    this.fen1 = fen1;
-    this.fen2 = fen2;
+let MODEL=[[],[]]
+
+/*MODEL=[[[20,10],[380,50]]],[[[]]] // essai
+ctx1 = document.getElementById('ctx1').getContext('2d');
+paint(ctx,tab)*/
+
+//VUE
+function repaint(){ //affiche le MODEL
+	let ctx1 = document.getElementById('ctx1').getContext('2d');
+    paint(ctx1, MODEL[0]);
+	
+}
+
+function paint(ctx,tab){ //affiche les segements contenus dans tab dans le canvas ctx
+	for (i = 0; i < tab.length; i += 1) {
+        ctx.lineWidth = 5;
+		ctx.strokeStyle = 'grey';
+		ctx.lineCap = 'round';
+		ctx.beginPath();
+		ctx.moveTo(tab[i][0], tab[i][1]);
+		ctx.lineTo(tab[i+1][0], tab[i+1][1]);
+		ctx.stroke();
+    }
+	
+	
+	
 }
