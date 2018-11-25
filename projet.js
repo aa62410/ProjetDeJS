@@ -75,8 +75,22 @@ Segment.prototype.average = function (p, alpha) {
 let MODEL=[[],[]]
 
 /*MODEL=[[[20,10],[380,50]]],[[[]]] // essai
+var a = new Point(20, 10);
+var b = new Point(380, 50);
+MODEL=[[a,b]],[[[]]]
 ctx1 = document.getElementById('ctx1').getContext('2d');
 paint(ctx,tab)*/
+
+/*MODEL[0][0]=[20,10],[290,120]
+ MODEL[0][1]=[290,120],[180,180]
+ MODEL[0][2]=[180,180],[70,180]
+ MODEL[0][3]=[70,180],[100,110]
+ repaint()
+ * 
+ * 
+ * 
+ * 
+ * */
 
 //VUE
 function repaint(){ //affiche le MODEL
@@ -91,8 +105,8 @@ function paint(ctx,tab){ //affiche les segements contenus dans tab dans le canva
 		ctx.strokeStyle = 'grey';
 		ctx.lineCap = 'round';
 		ctx.beginPath();
-		ctx.moveTo(tab[i][0], tab[i][1]);
-		ctx.lineTo(tab[i+1][0], tab[i+1][1]);
+		ctx.moveTo(tab[i].x, tab[i].y);
+		ctx.lineTo(tab[i+1].x, tab[i+1].y);
 		ctx.stroke();
     }
 	
