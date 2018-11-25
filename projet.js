@@ -86,7 +86,7 @@ function repaint(){ //affiche le MODEL
 }
 
 function paint(ctx,tab){ //affiche les segements contenus dans tab dans le canvas ctx
-	for (i = 0; i < tab.length; i += 1) {
+	for (i = 0; i < tab.length-1; i += 1) {
         ctx.lineWidth = 5;
 		ctx.strokeStyle = 'grey';
 		ctx.lineCap = 'round';
