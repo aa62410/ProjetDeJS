@@ -78,6 +78,17 @@ let MODEL=[[],[]]
 ctx1 = document.getElementById('ctx1').getContext('2d');
 paint(ctx,tab)*/
 
+/*MODEL[0][0]=[20,10],[290,120]
+ MODEL[0][1]=[290,120],[180,180]
+ MODEL[0][2]=[180,180],[70,180]
+ MODEL[0][3]=[70,180],[100,110]
+ repaint()
+ * 
+ * 
+ * 
+ * 
+ * */
+
 //VUE
 function repaint(){ //affiche le MODEL
 	let ctx1 = document.getElementById('ctx1').getContext('2d');
