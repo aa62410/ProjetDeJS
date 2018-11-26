@@ -145,3 +145,4 @@ function computeCoordinates(event){
 ctx1.onclick = function(event){
     var coords = computeCoordinates(event);
 }
+
