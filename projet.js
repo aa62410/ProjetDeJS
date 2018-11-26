@@ -74,32 +74,30 @@ Segment.prototype.average = function (p, alpha) {
 
 let MODEL=[[],[]]
 
-/*MODEL=[[[20,10],[380,50]]],[[[]]] // essai
+/*[20,10],[380,50] // essai
 
 var a = new Point(20, 10);
 var b = new Point(380, 50);
-MODEL=[[a],[b]],[[[]]]
-MODEL[0][0]=a
-MODEL[0][1]=b
+var c = new Segment(a,b,[130,255,255])
+MODEL=[[c]]
 
 ctx1 = document.getElementById('ctx1').getContext('2d');
 paint(ctx,tab)*/
 
-/*MODEL[0][0]=[20,10],[290,120]
- MODEL[0][1]=[290,120],[180,180]
- MODEL[0][2]=[180,180],[70,180]
- MODEL[0][3]=[70,180],[100,110]
-
+/*
 var a = new Point(20, 10);
 var b = new Point(290, 120);
 var c = new Point(180, 180);
 var d = new Point(70, 180);
 var e = new Point(100, 110);
-MODEL[0][0]=a
-MODEL[0][1]=b
-MODEL[0][2]=c
-MODEL[0][3]=d
-MODEL[0][4]=e
+var f = new Segment(a,b,[130,255,255])
+var g = new Segment(b,c,[130,255,255])
+var h = new Segment(c,d,[130,255,255])
+var i = new Segment(d,e,[130,255,255])
+MODEL[0][0]=f
+MODEL[0][1]=g
+MODEL[0][2]=h
+MODEL[0][3]=i
 
  repaint()
  * 
@@ -116,13 +114,13 @@ function repaint(){ //affiche le MODEL
 }
 
 function paint(ctx,tab){ //affiche les segements contenus dans tab dans le canvas ctx
-	for (i = 0; i < tab.length-1; i += 1) {
+	for (i = 0; i < tab.length; i += 1) {
         ctx.lineWidth = 5;
-		ctx.strokeStyle = 'grey';
+		ctx.strokeStyle = "rgb("+tab[i].couleur[0]+","+tab[i].couleur[1]+","+tab[i].couleur[2]+")";
 		ctx.lineCap = 'round';
 		ctx.beginPath();
-		ctx.moveTo(tab[i].x, tab[i].y);
-		ctx.lineTo(tab[i+1].x, tab[i+1].y);
+		ctx.moveTo(tab[i].p1.x, tab[i].p1.y);
+		ctx.lineTo(tab[i].p2.x, tab[i].p2.y);
 		ctx.stroke();
     }
 	
