@@ -72,7 +72,8 @@ Segment.prototype.average = function (p, alpha) {
     return new Segment(this.p1.average(p, alpha), this.p2.average(p, alpha));
 };
 
-let MODEL=[[],[]]
+let MODEL=[[],[]];
+var couleur=[0,0,0];
 
 /*[20,10],[380,50] // essai
 
@@ -146,3 +147,40 @@ ctx1.onclick = function(event){
     var coords = computeCoordinates(event);
 }
 
+//EDITEUR
+
+function computeCoordinates(event) {
+    // on récupère l'élément qui a produit l'événement (ici le canvas)
+    const canvas = event.currentTarget;
+    // on demande le rectangle englobant le canvas
+    const rect = canvas.getBoundingClientRect();
+    // on calcule les coordonnées relatives
+    const x = (event.clientX - rect.left) //MORT AU NOMBRE À VIRGULE :D
+    const y = (event.clientY - rect.top)
+    return [x, y];
+}
+
+/* THALASSA PROF */
+let lastClick = [null, null];
+
+function treatClick(e, n) {
+    let canvas = e.currentTarget;
+    let ctx = canvas.getContext('2d');
+
+    if (lastClick[n] === null || e.shiftKey) {
+        lastClick[n] = computeCoordinates(e);
+    } else {
+        let c = computeCoordinates(e, 10);
+        MODEL[n].push(new Segment(new Point(lastClick[n][0],lastClick[n][1]),new Point(c[0],c[1]),couleur))
+        //alert(c)
+        //drawLine(ctx, lastClick[n], c);
+        repaint()
+        //saveSegment([lastClick[n], c], n);
+
+        lastClick[n] = c;
+    }
+}
+
+    let canvas1 = document.getElementById('ctx1');
+    canvas1.addEventListener('click', (e) => treatClick(e, 0), false);
+    //window.addEventListener('keypress', (e) => doUndo(e, 0), false);
