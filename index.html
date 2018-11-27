@@ -15,22 +15,18 @@
                     <canvas width="420" height="315" id="ctx1">
                         Votre navigateur ne reconnaît pas la balise canvas...
                     </canvas>
-                    <input type="button" value="wesh clique sur moi frère !!!" onclick="var a = new Point(20, 10);
-var b = new Point(290, 120);
-var c = new Point(180, 180);
-var d = new Point(70, 180);
-var e = new Point(100, 110);
-var f = new Segment(a,b,[130,255,255]);
-var g = new Segment(b,c,[255,130,255]);
-var h = new Segment(c,d,[255,255,130]);
-var i = new Segment(d,e,[240,10,100]);
-MODEL[0][0]=f;
-MODEL[0][1]=g;
-MODEL[0][2]=h;
-MODEL[0][3]=i;
-repaint();
-"/>
-				<input type="button" value="Mr Propre passe S.T.P !!!!!" onclick="MODEL[0]=[];lastClick[0]=[];document.getElementById('ctx1').getContext('2d').clearRect(0, 0, document.getElementById('ctx1').width, document.getElementById('ctx1').height);"/>
+                    <input type="button" value="horizontal mirroir canvas 1" id="horizontalSymmetry1"/>
+				<input type="button" value="Mr Propre passe S.T.P pour le premier !!!!!"id="nettoie1"/>
+				<input type="button" value="vertical mirroir canvas 1" id="verticalSymmetry1"/>
+				
+				
+				
+				<br><canvas width="420" height="315" id="ctx2">
+                        Votre navigateur ne reconnaît pas la balise canvas...
+                    </canvas>
+                <input type="button" value="Mr Propre passe S.T.P pour le deuxieme !!!!!"id="nettoie2"/>
+                <input type="button" value="horizontal mirroir canvas 2" id="horizontalSymmetry2"/>
+                <input type="button" value="vertical mirroir canvas 2" id="verticalSymmetry2"/>
 				</div>
 			</div>
 		</div>
@@ -40,7 +36,7 @@ repaint();
 		<div class="blog-post">
           <h2>Sélection de couleurs HTML</h2>
 		  <p>Faites glisser horizontalement le curseur pour choisir la couleur, puis cliquez sur le carré des couleurs sur la gauche pour obtenir <b>le code HTML</b> désiré.</p>
-			<canvas class="columns" id="cpcanvas" id="myCanvas"  width="770" height="400" style="padding:0px"><canvas id="myCanvas" class="canvasBox" style="max-width: 100%;" width="770" height="463"></canvas></canvas>
+			<canvas class="columns" id="cpcanvas" width="770" height="400" style="padding:0px">Votre navigateur ne reconnaît pas la balise canvas...</canvas>
 			<br>
 			<span class="columns" style="background-image: url('img/grad-min.png');background-size: 100%;padding:0px; margin-bottom:20px;"><input type="range" min="0" max="359" value="0" id="HUE"></span>
 			<form>
@@ -63,10 +59,42 @@ repaint();
 	<script src="projet.js"></script>
 	
 	<script>
-	var can=document.getElementById("myCanvas"),ctx=can.getContext("2d"),img=new Image;img.onload=function(){can.width=img.naturalWidth;can.height=img.naturalHeight;ctx.drawImage(img,0,0)};img.src="/img/chart-min.png";function rgbToHex(a,c,b){if(255<a||255<c||255<b)throw"Invalid color component";return(a<<16|c<<8|b).toString(16)}function GetPixel(a,c){var b=can.clientWidth/can.width;b=ctx.getImageData(a/b,c/b,1,1).data;return"#"+("000000"+rgbToHex(b[0],b[1],b[2])).slice(-6).toUpperCase()}
-function getMousePos(a,c){var b=a.getBoundingClientRect();return{x:c.clientX-b.left,y:c.clientY-b.top}}can.onclick=function(a){mousePos=getMousePos(can,a);a=GetPixel(mousePos.x,mousePos.y);document.getElementById("pixcolor").value=a;document.getElementById("cccolor").style.backgroundColor=a};var cpcanvas=document.getElementById("cpcanvas"),cpctx=cpcanvas.getContext("2d"),hue=0,cpcolor=document.getElementById("cpcolor");drawCP(cpctx,hue);
-function drawCP(a,c){var b=a.createLinearGradient(0,0,a.canvas.width,0);b.addColorStop(0,"#fff");b.addColorStop(1,"hsl("+c+", 100%, 50%)");a.fillStyle=b;a.fillRect(0,0,a.canvas.width,a.canvas.height);b=a.createLinearGradient(0,0,0,a.canvas.height);b.addColorStop(0,"rgba(0,0,0,0)");b.addColorStop(1,"#000");a.fillStyle=b;a.fillRect(0,0,a.canvas.width,a.canvas.height)}
-function CPGetPixel(a,c){var b=can.clientWidth/can.width;b=cpctx.getImageData(a/b,c/b,1,1).data;couleur=[b[0],b[1],b[2]];return"#"+("000000"+rgbToHex(b[0],b[1],b[2])).slice(-6).toUpperCase()}HUE.onchange=function(){drawCP(cpctx,this.value)};cpcanvas.onclick=function(a){mousePos=getMousePos(cpcanvas,a);a=CPGetPixel(mousePos.x,mousePos.y);document.getElementById("cppixcolor").value=a;cpcolor.style.backgroundColor=a};
+	
+	function rgbToHex(a,c,b){
+		if(255<a||255<c||255<b)throw"Invalid color component";
+		return(a<<16|c<<8|b).toString(16)};	
+		
+	function getMousePos(a,c){
+		var b=a.getBoundingClientRect();
+		return{x:c.clientX-b.left,y:c.clientY-b.top}};	
+		
+	var cpcanvas=document.getElementById("cpcanvas"),cpctx=cpcanvas.getContext("2d"),hue=0,cpcolor=document.getElementById("cpcolor");drawCP(cpctx,hue);
+	
+	function drawCP(a,c){
+		var b=a.createLinearGradient(0,0,a.canvas.width,0);
+		b.addColorStop(0,"#fff");
+		b.addColorStop(1,"hsl("+c+", 100%, 50%)");
+		a.fillStyle=b;
+		a.fillRect(0,0,a.canvas.width,a.canvas.height);
+		b=a.createLinearGradient(0,0,0,a.canvas.height);
+		b.addColorStop(0,"rgba(0,0,0,0)");
+		b.addColorStop(1,"#000");
+		a.fillStyle=b;
+		a.fillRect(0,0,a.canvas.width,a.canvas.height)};
+		
+	function CPGetPixel(a,c){
+		var b=cpcanvas.clientWidth/cpcanvas.width;
+		b=cpctx.getImageData(a/b,c/b,1,1).data;couleur=[b[0],b[1],b[2]];
+		return"#"+("000000"+rgbToHex(b[0],b[1],b[2])).slice(-6).toUpperCase()};
+		
+	HUE.onchange=function(){
+		drawCP(cpctx,this.value)};
+		
+	cpcanvas.onclick=function(a){
+		mousePos=getMousePos(cpcanvas,a);
+		a=CPGetPixel(mousePos.x,mousePos.y);
+		document.getElementById("cppixcolor").value=a;
+		cpcolor.style.backgroundColor=a};
 	
 	</script>
      </body>

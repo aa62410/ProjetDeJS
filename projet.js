@@ -35,6 +35,7 @@ Point.prototype.clone = function () {
     return new Point(this.x, this.y);
 };
 
+//SEGMENT
 function Segment(p1, p2, couleur) {
     'use strict';
     Object.defineProperty(this, "p1", {
@@ -59,17 +60,17 @@ function Segment(p1, p2, couleur) {
 
 Segment.prototype.horizontalSymmetry = function (n) {
     'use strict';
-    return new Segment(this.p1.horizontalSymmetry(n), this.p2.horizontalSymmetry(n));
+    return new Segment(this.p1.horizontalSymmetry(n), this.p2.horizontalSymmetry(n), this.couleur);
 };
 
 Segment.prototype.verticalSymmetry = function (n) {
     'use strict';
-    return new Segment(this.p1.verticalSymmetry(n), this.p2.verticalSymmetry(n));
+    return new Segment(this.p1.verticalSymmetry(n), this.p2.verticalSymmetry(n), this.couleur);
 };
 
 Segment.prototype.average = function (p, alpha) {
     'use strict';
-    return new Segment(this.p1.average(p, alpha), this.p2.average(p, alpha));
+    return new Segment(this.p1.average(p, alpha), this.p2.average(p, alpha), this.couleur);
 };
 
 let MODEL=[[],[]];
@@ -110,7 +111,9 @@ MODEL[0][3]=i
 //VUE
 function repaint(){ //affiche le MODEL
 	let ctx1 = document.getElementById('ctx1').getContext('2d');
+	let ctx2 = document.getElementById('ctx2').getContext('2d');
     paint(ctx1, MODEL[0]);
+    paint(ctx2, MODEL[1]);
 	
 }
 
@@ -149,7 +152,7 @@ ctx1.onclick = function(event){
 
 //EDITEUR
 
-function computeCoordinates(event) {
+/*function computeCoordinates(event) {
     // on récupère l'élément qui a produit l'événement (ici le canvas)
     const canvas = event.currentTarget;
     // on demande le rectangle englobant le canvas
@@ -158,29 +161,65 @@ function computeCoordinates(event) {
     const x = (event.clientX - rect.left) //MORT AU NOMBRE À VIRGULE :D
     const y = (event.clientY - rect.top)
     return [x, y];
-}
+}*/
 
-/* THALASSA PROF */
-let lastClick = [null, null];
+function computeCoordinates(canvas, event){
+		var b=canvas.getBoundingClientRect();
+		return [event.clientX-b.left, event.clientY-b.top]
+};
 
-function treatClick(e, n) {
-    let canvas = e.currentTarget;
-    let ctx = canvas.getContext('2d');
+let PointDuClick = [null, null];
 
-    if (lastClick[n] === null || e.shiftKey) {
-        lastClick[n] = computeCoordinates(e);
+function polyligne(event, canvas, n) {
+    if (PointDuClick[n] === null || event.shiftKey) {
+        PointDuClick[n] = computeCoordinates(canvas, event);
     } else {
-        let c = computeCoordinates(e, 10);
-        MODEL[n].push(new Segment(new Point(lastClick[n][0],lastClick[n][1]),new Point(c[0],c[1]),couleur))
-        //alert(c)
-        //drawLine(ctx, lastClick[n], c);
+        let save = computeCoordinates(canvas, event);
+        MODEL[n].push(new Segment(new Point(PointDuClick[n][0],PointDuClick[n][1]),new Point(save[0],save[1]),couleur))
         repaint()
-        //saveSegment([lastClick[n], c], n);
-
-        lastClick[n] = c;
+        PointDuClick[n] = save;
     }
+};
+
+function nettoyage(canvas, n){
+	MODEL[n]=[];
+	PointDuClick[n]=[];
+	canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
+};
+
+function horizontalSymmetry(canvas, n) {
+	let i;
+	for (i=0; i<MODEL[n].length; i++){
+		MODEL[n][i] = MODEL[n][i].horizontalSymmetry(canvas.height/2);
+	}
+	canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
+	repaint();
 }
+
+function verticalSymmetry(canvas, n) {
+	let i;
+	for (i=0; i<MODEL[n].length; i++){
+		MODEL[n][i] = MODEL[n][i].verticalSymmetry(canvas.width/2);
+	}
+	canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
+	repaint();
+}
+
 
     let canvas1 = document.getElementById('ctx1');
-    canvas1.addEventListener('click', (e) => treatClick(e, 0), false);
-    //window.addEventListener('keypress', (e) => doUndo(e, 0), false);
+    let canvas2 = document.getElementById('ctx2');
+    let nettoie1 = document.getElementById("nettoie1");
+    let nettoie2 = document.getElementById("nettoie2");
+    let horizontalSymmetry1 = document.getElementById("horizontalSymmetry1");
+    let horizontalSymmetry2 = document.getElementById("horizontalSymmetry2");
+    let verticalSymmetry1 = document.getElementById("verticalSymmetry1");
+    let verticalSymmetry2 = document.getElementById("verticalSymmetry2");
+    
+    canvas1.onclick=function(event){polyligne(event, canvas1, 0)};
+    canvas2.onclick=function(event){polyligne(event, canvas2, 1)};
+	nettoie1.onclick=function(){nettoyage(canvas1, 0)};
+	nettoie2.onclick=function(){nettoyage(canvas2, 1)};
+	horizontalSymmetry1.onclick=function(){horizontalSymmetry(canvas1, 0)};
+	horizontalSymmetry2.onclick=function(){horizontalSymmetry(canvas2, 1)};
+	verticalSymmetry1.onclick=function(){verticalSymmetry(canvas1, 0)};
+	verticalSymmetry2.onclick=function(){verticalSymmetry(canvas2, 1)};
