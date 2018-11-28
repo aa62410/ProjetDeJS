@@ -205,6 +205,28 @@ function verticalSymmetry(canvas, n) {
 	repaint();
 }
 
+function Echange(){
+    let tmp = MODEL[0];
+    MODEL[0] = MODEL[1];
+    MODEL[1] = tmp;
+    tmp = PointDuClick[0];
+    PointDuClick[0] = PointDuClick[1];
+    PointDuClick[1] = tmp;
+    repaint();
+}
+
+function Transfer(i){
+    if(i===0){
+        MODEL[1] = MODEL[0].slice(0);
+        PointDuClick[1] = PointDuClick[0].slice(0);
+    }
+    else{
+        MODEL[0] = MODEL[1].slice(0);
+        PointDuClick[0] = PointDuClick[1].slice(0);
+    }
+    repaint();
+}
+
 function main(){
     let canvas1 = document.getElementById('ctx1');
     let canvas2 = document.getElementById('ctx2');
@@ -214,6 +236,9 @@ function main(){
     let horizontalSymmetry2 = document.getElementById("horizontalSymmetry2");
     let verticalSymmetry1 = document.getElementById("verticalSymmetry1");
     let verticalSymmetry2 = document.getElementById("verticalSymmetry2");
+    let echange = document.getElementById("echange");
+    let unversdeux = document.getElementById("unversdeux");
+    let deuxversun = document.getElementById("deuxversun");
     
     canvas1.onclick=function(event){polyligne(event, canvas1, 0)};
     canvas2.onclick=function(event){polyligne(event, canvas2, 1)};
@@ -223,6 +248,10 @@ function main(){
 	horizontalSymmetry2.onclick=function(){horizontalSymmetry(canvas2, 1)};
 	verticalSymmetry1.onclick=function(){verticalSymmetry(canvas1, 0)};
 	verticalSymmetry2.onclick=function(){verticalSymmetry(canvas2, 1)};
+    echange.onclick=function(){Echange()};
+    unversdeux.onclick=function(){Transfer(0)};
+    deuxversun.onclick=function(){Transfer(1)};
+
 }
 
 main()
