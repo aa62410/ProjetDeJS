@@ -110,10 +110,12 @@ MODEL[0][3]=i
 
 //VUE
 function repaint(){ //affiche le MODEL
-	let ctx1 = document.getElementById('ctx1').getContext('2d');
-	let ctx2 = document.getElementById('ctx2').getContext('2d');
-    paint(ctx1, MODEL[0]);
-    paint(ctx2, MODEL[1]);
+    let ctx1 = document.getElementById('ctx1');
+	let ctx2 = document.getElementById('ctx2');
+    ctx1.getContext('2d').clearRect(0, 0, ctx1.width, ctx1.height);
+    ctx2.getContext('2d').clearRect(0, 0, ctx2.width, ctx2.height);
+    paint(ctx1.getContext('2d'), MODEL[0]);
+    paint(ctx2.getContext('2d'), MODEL[1]);
 	
 }
 
@@ -132,23 +134,23 @@ function paint(ctx,tab){ //affiche les segements contenus dans tab dans le canva
 	
 }
 
-function computeCoordinates(event){
+//function computeCoordinates(event){
     //on recup l'evenement qui a produit l'evenement (ici le canvas)
-    const canvas = event.currentTarget;
+    //const canvas = event.currentTarget;
 
     //on demande le rectangle englobant le canvas
-    const rect = canvas.getBoundingClientRect();
+    //const rect = canvas.getBoundingClientRect();
 
     //on calcule les coordonnée relatives
-    const x = event.clientX - rect.left;
-    const y = event.clientY - rect.top;
+    //const x = event.clientX - rect.left;
+    //const y = event.clientY - rect.top;
 
-    return [x,y]
-}
+    //return [x,y]
+//}
 
-ctx1.onclick = function(event){
-    var coords = computeCoordinates(event);
-}
+//ctx1.onclick = function(event){
+    //var coords = computeCoordinates(event);
+//}
 
 //EDITEUR
 
@@ -192,7 +194,6 @@ function horizontalSymmetry(canvas, n) {
 	for (i=0; i<MODEL[n].length; i++){
 		MODEL[n][i] = MODEL[n][i].horizontalSymmetry(canvas.height/2);
 	}
-	canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
 	repaint();
 }
 
@@ -201,11 +202,10 @@ function verticalSymmetry(canvas, n) {
 	for (i=0; i<MODEL[n].length; i++){
 		MODEL[n][i] = MODEL[n][i].verticalSymmetry(canvas.width/2);
 	}
-	canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
 	repaint();
 }
 
-
+function main(){
     let canvas1 = document.getElementById('ctx1');
     let canvas2 = document.getElementById('ctx2');
     let nettoie1 = document.getElementById("nettoie1");
@@ -223,3 +223,6 @@ function verticalSymmetry(canvas, n) {
 	horizontalSymmetry2.onclick=function(){horizontalSymmetry(canvas2, 1)};
 	verticalSymmetry1.onclick=function(){verticalSymmetry(canvas1, 0)};
 	verticalSymmetry2.onclick=function(){verticalSymmetry(canvas2, 1)};
+}
+
+main()
