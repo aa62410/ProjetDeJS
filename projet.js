@@ -229,6 +229,24 @@ function Transfer(i){
     repaint();
 }
 
+function undo(i){
+    MODEL[i].pop();
+    if(MODEL[i].length != 0)
+        PointDuClick[i] = MODEL[i][MODEL[i].length-1].p2;
+    else
+        PointDuClick[i] = null;
+    repaint();
+}
+
+function morphing(de,cible,statut){
+    if(statut == 0){
+
+    }
+    else{
+        
+    }
+}
+
 function main(){
     let canvas1 = document.getElementById('ctx1');
     let canvas2 = document.getElementById('ctx2');
@@ -241,6 +259,9 @@ function main(){
     let echange = document.getElementById("echange");
     let unversdeux = document.getElementById("unversdeux");
     let deuxversun = document.getElementById("deuxversun");
+    let undo1 = document.getElementById("undo1");
+    let undo2 = document.getElementById("undo2");
+    let start2 = document.getElementById("start2");
     
     canvas1.onclick=function(event){polyligne(event, canvas1, 0)};
     canvas2.onclick=function(event){polyligne(event, canvas2, 1)};
@@ -253,6 +274,14 @@ function main(){
     echange.onclick=function(){Echange()};
     unversdeux.onclick=function(){Transfer(0)};
     deuxversun.onclick=function(){Transfer(1)};
+    undo1.onclick=function(){undo(0)};
+    undo2.onclick=function(){undo(1)};
+    if(start2.value == "Start"){
+        start2.onclick=function(){morphing(1,0,0)};
+    }
+    else{
+        start2.onclick=function(){morphing(1,0,1)};
+    }
 
 }
 
