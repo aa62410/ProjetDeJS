@@ -167,7 +167,7 @@ function paint(ctx,tab){ //affiche les segements contenus dans tab dans le canva
 
 function computeCoordinates(canvas, event){
 		var b=canvas.getBoundingClientRect();
-		return [event.clientX-b.left, event.clientY-b.top]
+		return new Point(event.clientX-b.left, event.clientY-b.top);
 };
 
 let PointDuClick = [null, null];
@@ -177,7 +177,7 @@ function polyligne(event, canvas, n) {
         PointDuClick[n] = computeCoordinates(canvas, event);
     } else {
         let save = computeCoordinates(canvas, event);
-        MODEL[n].push(new Segment(new Point(PointDuClick[n][0],PointDuClick[n][1]),new Point(save[0],save[1]),couleur))
+        MODEL[n].push(new Segment(PointDuClick[n].clone(),save.clone(),couleur))
         repaint()
         PointDuClick[n] = save;
     }
@@ -185,8 +185,8 @@ function polyligne(event, canvas, n) {
 
 function nettoyage(canvas, n){
 	MODEL[n]=[];
-	PointDuClick[n]=[];
-	canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
+	PointDuClick[n]=null;
+    canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
 };
 
 function horizontalSymmetry(canvas, n) {
@@ -194,6 +194,7 @@ function horizontalSymmetry(canvas, n) {
 	for (i=0; i<MODEL[n].length; i++){
 		MODEL[n][i] = MODEL[n][i].horizontalSymmetry(canvas.height/2);
 	}
+    PointDuClick[n] = PointDuClick[n].horizontalSymmetry(canvas.height/2);
 	repaint();
 }
 
@@ -202,6 +203,7 @@ function verticalSymmetry(canvas, n) {
 	for (i=0; i<MODEL[n].length; i++){
 		MODEL[n][i] = MODEL[n][i].verticalSymmetry(canvas.width/2);
 	}
+    PointDuClick[n] = PointDuClick[n].verticalSymmetry(canvas.width/2);
 	repaint();
 }
 
@@ -209,8 +211,8 @@ function Echange(){
     let tmp = MODEL[0];
     MODEL[0] = MODEL[1];
     MODEL[1] = tmp;
-    tmp = PointDuClick[0];
-    PointDuClick[0] = PointDuClick[1];
+    tmp = PointDuClick[0].clone();
+    PointDuClick[0] = PointDuClick[1].clone();
     PointDuClick[1] = tmp;
     repaint();
 }
@@ -218,11 +220,11 @@ function Echange(){
 function Transfer(i){
     if(i===0){
         MODEL[1] = MODEL[0].slice(0);
-        PointDuClick[1] = PointDuClick[0].slice(0);
+        PointDuClick[1] = PointDuClick[0].clone();
     }
     else{
         MODEL[0] = MODEL[1].slice(0);
-        PointDuClick[0] = PointDuClick[1].slice(0);
+        PointDuClick[0] = PointDuClick[1].clone();
     }
     repaint();
 }
