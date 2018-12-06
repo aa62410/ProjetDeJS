@@ -324,10 +324,17 @@ function main(){
     deuxversun.onclick=function(){Transfer(1)};
     undo1.onclick=function(){undo(0)};
     undo2.onclick=function(){undo(1)};
-	start.onclick = function(event){
+	start1.onclick = function(event){
 		var modele=segment_fantome();
 		if (alpha == 0){
 			id=setInterval(function(){morphing(modele,canvas1,statut%2);},100);
+			statut += 1;
+		}
+	};
+	start2.onclick = function(event){
+		var modele=segment_fantome();
+		if (alpha == 0){
+			id=setInterval(function(){morphing(modele,canvas2,statut%2);},100);
 			statut += 1;
 		}
 	};
