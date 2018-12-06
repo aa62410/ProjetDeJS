@@ -11,7 +11,7 @@ body{
     margin-right : auto;
 }
 
-#ctx1,#ctx2{
+#ctx1,#ctx2,#ctx3{
     border-width : 5px;
     border-color : black;
     border-style : solid;

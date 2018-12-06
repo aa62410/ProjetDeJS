@@ -25,9 +25,11 @@ Point.prototype.verticalSymmetry = function (n) {
     return new Point(this.x - (2 * (this.x - n)), this.y);
 };
 
-Point.prototype.average= function (p2,alpha){
+Point.prototype.average= function (p2,al){
     'use strict';
-    return new Point(this.x*(1-alpha)+p2.x+alpha,this.y*(1-alpha)+p2.y+alpha);
+	var n_x = this.x*(1-al / 1000)+p2.x*al/1000;
+	var n_y = this.y*(1-al / 1000)+p2.y*al/1000;
+    return (new Point(n_x, n_y));
 };
 
 Point.prototype.clone = function () {
@@ -68,13 +70,16 @@ Segment.prototype.verticalSymmetry = function (n) {
     return new Segment(this.p1.verticalSymmetry(n), this.p2.verticalSymmetry(n), this.couleur);
 };
 
-Segment.prototype.average = function (p, alpha) {
+Segment.prototype.average = function (p, al) {
     'use strict';
-    return new Segment(this.p1.average(p, alpha), this.p2.average(p, alpha), this.couleur);
+	var n_p1 = this.p1.average(p.p1, al);
+	var n_p2 = this.p2.average(p.p2, al);
+    return new Segment(n_p1, n_p2, this.couleur);
 };
 
 let MODEL=[[],[]];
 var couleur=[0,0,0];
+var alpha = 0;
 
 /*[20,10],[380,50] // essai
 
@@ -112,14 +117,14 @@ MODEL[0][3]=i
 function repaint(){ //affiche le MODEL
     let ctx1 = document.getElementById('ctx1');
 	let ctx2 = document.getElementById('ctx2');
-    ctx1.getContext('2d').clearRect(0, 0, ctx1.width, ctx1.height);
-    ctx2.getContext('2d').clearRect(0, 0, ctx2.width, ctx2.height);
-    paint(ctx1.getContext('2d'), MODEL[0]);
-    paint(ctx2.getContext('2d'), MODEL[1]);
+    paint(ctx1, MODEL[0]);
+    paint(ctx2, MODEL[1]);
 	
 }
 
 function paint(ctx,tab){ //affiche les segements contenus dans tab dans le canvas ctx
+	ctx.getContext('2d').clearRect(0, 0, ctx.width, ctx.height)
+	ctx = ctx.getContext('2d')
 	for (i = 0; i < tab.length; i += 1) {
         ctx.lineWidth = 5;
 		ctx.strokeStyle = "rgb("+tab[i].couleur[0]+","+tab[i].couleur[1]+","+tab[i].couleur[2]+")";
@@ -129,6 +134,7 @@ function paint(ctx,tab){ //affiche les segements contenus dans tab dans le canva
 		ctx.lineTo(tab[i].p2.x, tab[i].p2.y);
 		ctx.stroke();
     }
+    
 	
 	
 	
@@ -238,14 +244,54 @@ function undo(i){
     repaint();
 }
 
-function morphing(de,cible,statut){
-    if(statut == 0){
+	function segment_fantome(){
+		var n_m1 = [[],[]],i=0;
+		var l1=MODEL[0].length,l2=MODEL[1].length;
+		for(i=0;i<l1;i++){
+			n_m1[0].push(MODEL[0][i]);
+		}
+		for(i=0;i<l2;i++){
+			n_m1[1].push(MODEL[1][i]);
+		}
 
-    }
-    else{
-        
-    }
-}
+		while(l1 > l2){
+			n_m1[1].push(MODEL[1][0]);
+			l2++;
+		}
+
+		while(l1 < l2){
+			n_m1[0].push(MODEL[0][0]);
+			l1++;
+		}
+
+
+		return n_m1;
+	}
+	
+	
+	function  morphing(model,canvas,statut){
+		var rlt=[],i;
+		var taille = model[0].length
+		if (statut == 0) {
+			for(i=0;i<taille;i++){
+				rlt.push(model[0][i].average(model[1][i], alpha));
+			}
+		}
+		else {
+			for(i=0; i<taille; i++){
+				rlt.push(model[1][i].average(model[0][i], alpha));
+			}
+		}
+		paint(canvas,rlt);
+		alpha+=100;
+		if(alpha>1000){
+			clearInterval(id);
+			alpha=0;
+			id=null;
+			anti_anthony = 0;
+		}	
+	}
+
 
 function main(){
     let canvas1 = document.getElementById('ctx1');
@@ -261,8 +307,10 @@ function main(){
     let deuxversun = document.getElementById("deuxversun");
     let undo1 = document.getElementById("undo1");
     let undo2 = document.getElementById("undo2");
-    let start2 = document.getElementById("start2");
+    let start = document.getElementById("start");
     
+    var statut = 0;   
+        
     canvas1.onclick=function(event){polyligne(event, canvas1, 0)};
     canvas2.onclick=function(event){polyligne(event, canvas2, 1)};
 	nettoie1.onclick=function(){nettoyage(canvas1, 0)};
@@ -276,12 +324,14 @@ function main(){
     deuxversun.onclick=function(){Transfer(1)};
     undo1.onclick=function(){undo(0)};
     undo2.onclick=function(){undo(1)};
-    if(start2.value == "Start"){
-        start2.onclick=function(){morphing(1,0,0)};
-    }
-    else{
-        start2.onclick=function(){morphing(1,0,1)};
-    }
+	start.onclick = function(event){
+		var modele=segment_fantome();
+		if (alpha == 0){
+			id=setInterval(function(){morphing(modele,canvas1,statut%2);},100);
+			statut += 1;
+		}
+	};
+
 
 }
 
