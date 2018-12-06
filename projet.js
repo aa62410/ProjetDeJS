@@ -2,13 +2,13 @@
 function Point(abs, ord) {
 	'use strict';
     Object.defineProperty(this, "x", {
-        enumerable: false,
+        enumerable: true,
         writable: false,
         configurable: false,
         value: abs
     });
     Object.defineProperty(this, "y", {
-        enumerable: false,
+        enumerable: true,
         writable: false,
         configurable: false,
         value: ord
@@ -41,19 +41,19 @@ Point.prototype.clone = function () {
 function Segment(p1, p2, couleur) {
     'use strict';
     Object.defineProperty(this, "p1", {
-        enumerable: false,
+        enumerable: true,
         writable: false,
         configurable: false,
         value: p1
     });
     Object.defineProperty(this, "p2", {
-        enumerable: false,
+        enumerable: true,
         writable: false,
         configurable: false,
         value: p2
     });
     Object.defineProperty(this, "couleur", {
-        enumerable: false,
+        enumerable: true,
         writable: false,
         configurable: false,
         value: couleur
@@ -244,54 +244,73 @@ function undo(i){
     repaint();
 }
 
-	function segment_fantome(){
-		var n_m1 = [[],[]],i=0;
-		var l1=MODEL[0].length,l2=MODEL[1].length;
-		for(i=0;i<l1;i++){
-			n_m1[0].push(MODEL[0][i]);
-		}
-		for(i=0;i<l2;i++){
-			n_m1[1].push(MODEL[1][i]);
-		}
+function segment_fantome(){
+    var n_m1 = [[],[]],i=0;
+    var l1=MODEL[0].length,l2=MODEL[1].length;
+    for(i=0;i<l1;i++){
+        n_m1[0].push(MODEL[0][i]);
+    }
+    for(i=0;i<l2;i++){
+        n_m1[1].push(MODEL[1][i]);
+    }
 
-		while(l1 > l2){
-			n_m1[1].push(MODEL[1][0]);
-			l2++;
-		}
+    while(l1 > l2){
+        n_m1[1].push(MODEL[1][0]);
+        l2++;
+    }
 
-		while(l1 < l2){
-			n_m1[0].push(MODEL[0][0]);
-			l1++;
-		}
+    while(l1 < l2){
+        n_m1[0].push(MODEL[0][0]);
+        l1++;
+    }
 
 
-		return n_m1;
-	}
-	
-	
-	function  morphing(model,canvas,statut){
-		var rlt=[],i;
-		var taille = model[0].length
-		if (statut == 0) {
-			for(i=0;i<taille;i++){
-				rlt.push(model[0][i].average(model[1][i], alpha));
-			}
-		}
-		else {
-			for(i=0; i<taille; i++){
-				rlt.push(model[1][i].average(model[0][i], alpha));
-			}
-		}
-		paint(canvas,rlt);
-		alpha+=100;
-		if(alpha>1000){
-			clearInterval(id);
-			alpha=0;
-			id=null;
-			anti_anthony = 0;
-		}	
-	}
+    return n_m1;
+}
 
+
+function  morphing(model,canvas,statut){
+    var rlt=[],i;
+    var taille = model[0].length
+    if (statut == 0) {
+        for(i=0;i<taille;i++){
+            rlt.push(model[0][i].average(model[1][i], alpha));
+        }
+    }
+    else {
+        for(i=0; i<taille; i++){
+            rlt.push(model[1][i].average(model[0][i], alpha));
+        }
+    }
+    paint(canvas,rlt);
+    alpha+=100;
+    if(alpha>1000){
+        clearInterval(id);
+        alpha=0;
+        id=null;
+    }	
+}
+
+function Export(area){
+    if (area == 0){
+        area1.value = JSON.stringify(MODEL[0]);
+    }
+    else{
+        area2.value = JSON.stringify(MODEL[1]);
+    }
+}
+
+function Import(area){
+    if (area == 0){
+        MODEL[0] = JSON.parse(area1.value);
+        PointDuClick[0] = MODEL[0][MODEL[0].length-1].p2;
+    }
+    else{
+        MODEL[1] = JSON.parse(area2.value);
+        PointDuClick[1] = MODEL[1][MODEL[1].length-1].p2;
+    }
+    repaint();
+}
 
 function main(){
     let canvas1 = document.getElementById('ctx1');
@@ -308,7 +327,13 @@ function main(){
     let undo1 = document.getElementById("undo1");
     let undo2 = document.getElementById("undo2");
     let start = document.getElementById("start");
-    
+    let area1 = document.getElementById("area1");
+    let import1 = document.getElementById("import1");
+    let export1 = document.getElementById("export1");
+    let area2 = document.getElementById("area2");
+    let import2 = document.getElementById("import2");
+    let export2 = document.getElementById("export2");
+
     var statut = 0;   
         
     canvas1.onclick=function(event){polyligne(event, canvas1, 0)};
@@ -338,6 +363,10 @@ function main(){
 			statut += 1;
 		}
 	};
+    import1.onclick = function(){Import(0)};
+    export1.onclick = function(){Export(0)};
+    import2.onclick = function(){Import(1)};
+    export2.onclick = function(){Export(1)};
 
 
 }
