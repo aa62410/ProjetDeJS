@@ -74,7 +74,7 @@ Segment.prototype.average = function (p, al) {
     'use strict';
 	var n_p1 = this.p1.average(p.p1, al);
 	var n_p2 = this.p2.average(p.p2, al);
-    return new Segment(n_p1, n_p2, this.couleur);
+    return new Segment(n_p1, n_p2, p.couleur);
 };
 
 let MODEL=[[],[]];
