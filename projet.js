@@ -302,11 +302,17 @@ function Export(area){
 
 function Import(area){
     if (area == 0){
-        MODEL[0] = JSON.parse(area1.value);
+	var truc = JSON.parse(area1.value);
+	for (var i =0 ; i<truc.length; i++){
+		MODEL[0][i] = new Segment(new Point(truc[i]['p1']['x'], truc[i]['p1']['y']),new Point(truc[i]['p2']['x'], truc[i]['p2']['y']),truc[i]['couleur'])
+	}
         PointDuClick[0] = MODEL[0][MODEL[0].length-1].p2;
     }
     else{
-        MODEL[1] = JSON.parse(area2.value);
+	var truc = JSON.parse(area2.value);
+	for (var i =0 ; i<truc.length; i++){
+		MODEL[1][i] = new Segment(new Point(truc[i]['p1']['x'], truc[i]['p1']['y']),new Point(truc[i]['p2']['x'], truc[i]['p2']['y']),truc[i]['couleur'])
+	}
         PointDuClick[1] = MODEL[1][MODEL[1].length-1].p2;
     }
     repaint();
