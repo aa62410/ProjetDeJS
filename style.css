@@ -17,3 +17,16 @@ body{
     border-style : solid;
     border-radius: 15px;
 }
+
+#boutonscanvas1,#boutonscanvas2{
+    margin-right : 80%;
+}
+
+#boutonsimportexport1,#boutonsimportexport2{
+    margin-left:50%;
+}
+
+#echange{
+    margin-right:auto%;
+    margin-left:auto%;
+}
