@@ -264,91 +264,94 @@ function  morphing(model, canvas, statut){
     }
 }
 
-function Export(area){
-    if (area == 0){
+function Export(area) {
+    'use strict';
+    if (area == 0) {
         area1.value = JSON.stringify(MODEL[0]);
-    }
-    else{
+    } else {
         area2.value = JSON.stringify(MODEL[1]);
     }
 }
 
 
-function Import(area){
-    if (area == 0){
-        var truc = JSON.parse(area1.value);
-        for (var i =0 ; i<truc.length; i++){
-            MODEL[0][i] = new Segment(new Point(truc[i]['p1']['x'], truc[i]['p1']['y']),new Point(truc[i]['p2']['x'], truc[i]['p2']['y']),truc[i]['couleur'])
+function Import(area) {
+    'use strict';
+    var i;
+    var truc;
+    if (area === 0) {
+        truc = JSON.parse(area1.value);
+        for (i = 0 ; i < truc.length; i += 1) {
+            MODEL[0][i] = new Segment(new Point(truc[i]['p1']['x'], truc[i]['p1']['y']), new Point(truc[i]['p2']['x'], truc[i]['p2']['y']), truc[i]['couleur']);
         }
         PointDuClick[0] = MODEL[0][MODEL[0].length-1].p2;
-    }
-    else{
-        var truc = JSON.parse(area2.value);
-        for (var i =0 ; i<truc.length; i++){
-            MODEL[1][i] = new Segment(new Point(truc[i]['p1']['x'], truc[i]['p1']['y']),new Point(truc[i]['p2']['x'], truc[i]['p2']['y']),truc[i]['couleur'])
+    } else {
+        truc = JSON.parse(area2.value);
+        for (i = 0 ; i < truc.length; i += 1) {
+            MODEL[1][i] = new Segment(new Point(truc[i]['p1']['x'], truc[i]['p1']['y']), new Point(truc[i]['p2']['x'], truc[i]['p2']['y']), truc[i]['couleur']);
         }
         PointDuClick[1] = MODEL[1][MODEL[1].length-1].p2;
     }
     repaint();
 }
 
-function main(){
-    let canvas1 = document.getElementById('ctx1');
-    let canvas2 = document.getElementById('ctx2');
-    let nettoie1 = document.getElementById("nettoie1");
-    let nettoie2 = document.getElementById("nettoie2");
-    let horizontalSymmetry1 = document.getElementById("horizontalSymmetry1");
-    let horizontalSymmetry2 = document.getElementById("horizontalSymmetry2");
-    let verticalSymmetry1 = document.getElementById("verticalSymmetry1");
-    let verticalSymmetry2 = document.getElementById("verticalSymmetry2");
-    let echange = document.getElementById("echange");
-    let unversdeux = document.getElementById("unversdeux");
-    let deuxversun = document.getElementById("deuxversun");
-    let undo1 = document.getElementById("undo1");
-    let undo2 = document.getElementById("undo2");
-    let start = document.getElementById("start");
-    let area1 = document.getElementById("area1");
-    let import1 = document.getElementById("import1");
-    let export1 = document.getElementById("export1");
-    let area2 = document.getElementById("area2");
-    let import2 = document.getElementById("import2");
-    let export2 = document.getElementById("export2");
+function main() {
+    var canvas1 = document.getElementById('ctx1');
+    var canvas2 = document.getElementById('ctx2');
+    var nettoie1 = document.getElementById("nettoie1");
+    var nettoie2 = document.getElementById("nettoie2");
+    var horizontalSymmetry1 = document.getElementById("horizontalSymmetry1");
+    var horizontalSymmetry2 = document.getElementById("horizontalSymmetry2");
+    var verticalSymmetry1 = document.getElementById("verticalSymmetry1");
+    var verticalSymmetry2 = document.getElementById("verticalSymmetry2");
+    var echange = document.getElementById("echange");
+    var unversdeux = document.getElementById("unversdeux");
+    var deuxversun = document.getElementById("deuxversun");
+    var undo1 = document.getElementById("undo1");
+    var undo2 = document.getElementById("undo2");
+    var start = document.getElementById("start");
+    var area1 = document.getElementById("area1");
+    var import1 = document.getElementById("import1");
+    var export1 = document.getElementById("export1");
+    var area2 = document.getElementById("area2");
+    var import2 = document.getElementById("import2");
+    var export2 = document.getElementById("export2");
 
-    var statut = 0;   
-        
-    canvas1.onclick=function(event){polyligne(event, canvas1, 0)};
-    canvas2.onclick=function(event){polyligne(event, canvas2, 1)};
-    nettoie1.onclick=function(){nettoyage(canvas1, 0)};
-    nettoie2.onclick=function(){nettoyage(canvas2, 1)};
-    horizontalSymmetry1.onclick=function(){horizontalSymmetry(canvas1, 0)};
-    horizontalSymmetry2.onclick=function(){horizontalSymmetry(canvas2, 1)};
-    verticalSymmetry1.onclick=function(){verticalSymmetry(canvas1, 0)};
-    verticalSymmetry2.onclick=function(){verticalSymmetry(canvas2, 1)};
-    echange.onclick=function(){Echange()};
-    unversdeux.onclick=function(){Transfer(0)};
-    deuxversun.onclick=function(){Transfer(1)};
-    undo1.onclick=function(){undo(0)};
-    undo2.onclick=function(){undo(1)};
-    start1.onclick = function(event){
+    var statut = 0;
+
+    canvas1.onclick=function(event){polyligne(event, canvas1, 0);}
+    canvas2.onclick=function(event){polyligne(event, canvas2, 1);}
+    nettoie1.onclick=function(){nettoyage(canvas1, 0);}
+    nettoie2.onclick=function(){nettoyage(canvas2, 1);}
+    horizontalSymmetry1.onclick=function(){horizontalSymmetry(canvas1, 0);}
+    horizontalSymmetry2.onclick=function(){horizontalSymmetry(canvas2, 1);}
+    verticalSymmetry1.onclick=function(){verticalSymmetry(canvas1, 0);}
+    verticalSymmetry2.onclick=function(){verticalSymmetry(canvas2, 1);}
+    echange.onclick=function(){Echange();}
+    unversdeux.onclick=function(){Transfer(0);}
+    deuxversun.onclick=function(){Transfer(1);}
+    undo1.onclick=function(){undo(0);}
+    undo2.onclick=function(){undo(1);}
+    start1.onclick = function(event) {
         var modele=segment_fantome();
-        if (alpha == 0){
-            id=setInterval(function(){morphing(modele,canvas1,statut%2);},100);
+        if (alpha === 0) {
+            id = setInterval(function(){morphing(modele,canvas1,statut%2);},100);
             statut += 1;
         }
-    };
-    start2.onclick = function(event){
+    }
+    start2.onclick = function(event) {
         var modele=segment_fantome();
-        if (alpha == 0){
-            id=setInterval(function(){morphing(modele,canvas2,statut%2);},100);
+        if (alpha === 0) {
+            id = setInterval(function(){morphing(modele,canvas2,statut%2);},100);
             statut += 1;
         }
-    };
-    import1.onclick = function(){Import(0)};
-    export1.onclick = function(){Export(0)};
-    import2.onclick = function(){Import(1)};
-    export2.onclick = function(){Export(1)};
+    }
+    import1.onclick = function(){Import(0);}
+    export1.onclick = function(){Export(0);}
+    import2.onclick = function(){Import(1);}
+    export2.onclick = function(){Export(1);}
 
 
 }
+
 
 main()
